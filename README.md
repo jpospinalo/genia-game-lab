@@ -7,7 +7,7 @@ El juego está contenido en archivos HTML autocontenidos: no requiere librerías
 ## Versiones del juego
 
 - `starter.html`: versión base estable. Se conserva como punto de partida y recuperación.
-- `index.html`: versión de trabajo para la demostración en vivo. Es la que publica `aws/deploy.sh`.
+- `index.html`: versión de trabajo para la demostración en vivo. Se publica con `./aws/deploy.sh`.
 - `final.html`: ejemplo de una versión extendida con nuevos enemigos, jefe y armas.
 
 Durante la demostración modifica únicamente `index.html`. No uses `starter.html` como archivo de trabajo.
@@ -61,13 +61,39 @@ El script crea el bucket, habilita el alojamiento web estático y configura lect
 
 ### 2. Publicar el juego
 
+El mismo script permite publicar cualquiera de las tres versiones:
+
 ```bash
 ./aws/deploy.sh
 ```
 
-El script publica `index.html` y muestra la URL pública. Después de cada cambio probado localmente, vuelve a ejecutar el mismo comando y recarga la página en el navegador.
+Publica `index.html`, que es la versión de trabajo utilizada durante la demostración.
 
-Flujo recomendado:
+```bash
+./aws/deploy.sh starter
+```
+
+Publica `starter.html` como `index.html` en S3.
+
+```bash
+./aws/deploy.sh final
+```
+
+Publica `final.html` como `index.html` en S3.
+
+En los tres casos, el objeto publicado en S3 se llama `index.html`, por lo que **la URL pública del juego no cambia**. Los archivos locales `starter.html`, `index.html` y `final.html` tampoco se sobrescriben entre sí.
+
+Esto permite cambiar rápidamente entre versiones:
+
+```text
+./aws/deploy.sh starter  → versión base
+./aws/deploy.sh          → versión de demostración
+./aws/deploy.sh final    → versión final
+```
+
+Después de cada despliegue, el script imprime la URL pública del juego.
+
+Flujo recomendado durante la demostración:
 
 ```text
 modificar index.html
@@ -76,7 +102,7 @@ probar localmente
         ↓
 ./aws/deploy.sh
         ↓
-recargar la URL de S3
+recargar la misma URL de S3
 ```
 
 ## Flujo de la actividad

@@ -179,53 +179,65 @@ function resetGame() {
  *  PIXEL-ART DRAWING                                          *
  * ─────────────────────────────────────────────────────────── */
 
-/* Draw baby green dragon at (0,0), facing right */
+/* Draw astronaut at (0,0), facing right */
 function dragonSprite(gliding, af, inv) {
   if(inv>0 && (inv%6)<3) return; // invincibility flash
-  // tail
-  ctx.fillStyle='#1e8a35';
-  ctx.fillRect(-8,20,6,6); ctx.fillRect(-12,24,6,4);
-  ctx.fillStyle='#f0a500'; ctx.fillRect(-14,26,5,5);
-  // body
-  ctx.fillStyle='#2ecc40'; ctx.fillRect(2,8,22,20);
-  // belly
-  ctx.fillStyle='#8ee87a'; ctx.fillRect(5,12,13,14);
-  // back spikes
-  ctx.fillStyle='#1e8a35';
-  ctx.fillRect(2,3,4,9); ctx.fillRect(0,5,3,7);
-  ctx.fillRect(7,1,3,6); ctx.fillRect(12,0,3,5);
-  // wings
+  // HELMET
+  ctx.fillStyle='#dde8f0';
+  ctx.fillRect(4,0,20,16);
+  // visor dark base
+  ctx.fillStyle='#0a0f2a'; ctx.fillRect(7,3,14,9);
+  // visor tint
+  ctx.fillStyle='#1a3a99'; ctx.fillRect(8,4,12,7);
+  // visor reflection
+  ctx.fillStyle='#6688ff'; ctx.fillRect(9,4,4,3);
+  ctx.fillStyle='#aabbff'; ctx.fillRect(9,4,2,2);
+  // helmet ring
+  ctx.fillStyle='#b0b8c8'; ctx.fillRect(4,15,20,3);
+  // BACKPACK (life support, drawn behind body)
+  ctx.fillStyle='#8899aa'; ctx.fillRect(-4,17,7,13);
+  ctx.fillStyle='#667788'; ctx.fillRect(-3,19,5,9);
+  // tank detail
+  ctx.fillStyle='#99aabb'; ctx.fillRect(-3,19,2,3); ctx.fillRect(-3,23,2,3);
+  // BODY (suit torso)
+  ctx.fillStyle='#dde8f0'; ctx.fillRect(3,18,22,14);
+  // chest panel
+  ctx.fillStyle='#c0cad8'; ctx.fillRect(7,20,14,9);
+  // status lights
+  ctx.fillStyle='#00ff41'; ctx.fillRect(8,21,3,3);
+  ctx.fillStyle='#ff4400'; ctx.fillRect(13,21,3,3);
+  ctx.fillStyle='#ffcc00'; ctx.fillRect(18,21,3,3);
+  // suit seam
+  ctx.fillStyle='#b0b8c8'; ctx.fillRect(13,18,2,14);
+  // ARMS
+  ctx.fillStyle='#dde8f0';
+  ctx.fillRect(-1,20,4,9);  // left arm
+  ctx.fillRect(25,20,4,9);  // right arm
+  // gloves
+  ctx.fillStyle='#8899aa';
+  ctx.fillRect(-2,28,5,4);
+  ctx.fillRect(25,28,5,4);
+  // JETPACK thrust when gliding
   if(gliding) {
-    ctx.fillStyle='#1e8a35';
-    ctx.fillRect(-14,9,14,5); ctx.fillRect(26,9,14,5);
-    ctx.fillStyle='#2ecc40';
-    ctx.fillRect(-10,13,10,4); ctx.fillRect(28,13,10,4);
-    ctx.fillStyle='#1e8a35';
-    ctx.fillRect(-6,16,6,4); ctx.fillRect(28,16,6,4);
-  } else {
-    ctx.fillStyle='#1e8a35';
-    ctx.fillRect(-2,13,6,8); ctx.fillRect(24,13,6,8);
+    ctx.fillStyle='#ff6600';
+    ctx.fillRect(-5,26,4,4); ctx.fillRect(29,26,4,4);
+    ctx.fillStyle='#ffaa00';
+    ctx.fillRect(-4,28,3,5); ctx.fillRect(29,28,3,5);
+    ctx.fillStyle='#ffee88';
+    ctx.fillRect(-4,30,2,4); ctx.fillRect(30,30,2,4);
+    ctx.fillStyle='#fff';
+    ctx.fillRect(-3,29,1,2); ctx.fillRect(30,29,1,2);
   }
-  // head
-  ctx.fillStyle='#2ecc40'; ctx.fillRect(4,0,18,14);
-  // snout
-  ctx.fillStyle='#27b548'; ctx.fillRect(20,4,8,8);
-  // nostril
-  ctx.fillStyle='#1a7a2a'; ctx.fillRect(24,7,2,2);
-  // eye white
-  ctx.fillStyle='#fff'; ctx.fillRect(12,2,6,5);
-  // iris
-  ctx.fillStyle='#f0a500'; ctx.fillRect(13,3,4,4);
-  // pupil
-  ctx.fillStyle='#000'; ctx.fillRect(14,3,2,3);
-  // legs animated
-  ctx.fillStyle='#27b548';
+  // LEGS animated
+  ctx.fillStyle='#dde8f0';
   if(af===0){
-    ctx.fillRect(5,28,6,8); ctx.fillRect(15,28,6,8);
-    ctx.fillRect(3,34,9,4); ctx.fillRect(14,34,9,4);
+    ctx.fillRect(5,32,7,8); ctx.fillRect(16,32,7,8);
+    ctx.fillStyle='#8899aa';
+    ctx.fillRect(4,38,9,4);  ctx.fillRect(15,38,9,4);
   } else {
-    ctx.fillRect(5,28,6,10); ctx.fillRect(15,28,6,6);
-    ctx.fillRect(3,36,9,4); ctx.fillRect(14,32,9,4);
+    ctx.fillRect(5,32,7,10); ctx.fillRect(16,32,7,6);
+    ctx.fillStyle='#8899aa';
+    ctx.fillRect(4,40,9,4);  ctx.fillRect(15,36,9,4);
   }
 }
 
@@ -331,30 +343,65 @@ function drawGoal() {
   ctx.fillStyle='#888'; ctx.fillRect(gx+4,gy+GOAL.h,24,8);
 }
 
-/* Draw ocean background */
+/* Draw sky background */
 function drawBG() {
-  // sky→deep gradient
+  // sky gradient blue
   const g=ctx.createLinearGradient(0,0,0,H);
-  g.addColorStop(0,'#06082a'); g.addColorStop(0.55,'#0b1e55');
-  g.addColorStop(1,'#071e0e');
+  g.addColorStop(0,'#1a78c2'); g.addColorStop(0.6,'#5bb8f5');
+  g.addColorStop(1,'#c8e8ff');
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
 
-  // light rays
-  ctx.save(); ctx.globalAlpha=0.04; ctx.fillStyle='#3a80d0';
-  for(let i=0;i<6;i++){
-    const rx=((i*170+frame*0.15)%900)-100;
+  // sun
+  const sunX=W-110, sunY=70, sunR=44;
+  // glow
+  ctx.save(); ctx.globalAlpha=0.18; ctx.fillStyle='#fffaaa';
+  ctx.beginPath(); ctx.arc(sunX,sunY,sunR+22,0,Math.PI*2); ctx.fill();
+  ctx.globalAlpha=0.25; ctx.fillStyle='#ffe566';
+  ctx.beginPath(); ctx.arc(sunX,sunY,sunR+10,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+  // sun rays rotating
+  ctx.save(); ctx.translate(sunX,sunY);
+  ctx.rotate(frame*0.008);
+  ctx.strokeStyle='#ffd700'; ctx.lineWidth=3; ctx.globalAlpha=0.55;
+  for(let i=0;i<8;i++){
+    const a=(Math.PI*2/8)*i;
     ctx.beginPath();
-    ctx.moveTo(rx,0); ctx.lineTo(rx+80,H); ctx.lineTo(rx-30,H);
-    ctx.closePath(); ctx.fill();
+    ctx.moveTo(Math.cos(a)*(sunR+4), Math.sin(a)*(sunR+4));
+    ctx.lineTo(Math.cos(a)*(sunR+18), Math.sin(a)*(sunR+18));
+    ctx.stroke();
   }
   ctx.restore();
+  // sun disc
+  ctx.fillStyle='#ffe033';
+  ctx.beginPath(); ctx.arc(sunX,sunY,sunR,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#ffee88';
+  ctx.beginPath(); ctx.arc(sunX-10,sunY-10,sunR*0.55,0,Math.PI*2); ctx.fill();
 
-  // far seaweed silhouettes
-  ctx.fillStyle='#0b2e38';
-  for(let i=0;i<22;i++){
-    const bx=((i*165-camX*0.18)%W+W)%W;
-    const bh=38+(i%5)*18;
-    ctx.fillRect(bx,H-bh,10,bh); ctx.fillRect(bx+3,H-bh-12,5,14);
+  // clouds (parallax)
+  ctx.fillStyle='#fff';
+  const clouds=[
+    {wx:200,y:60,w:110,h:38},{wx:550,y:40,w:80,h:28},
+    {wx:950,y:70,w:130,h:42},{wx:1400,y:50,w:100,h:32},
+    {wx:1800,y:65,w:90,h:30},{wx:2200,y:45,w:120,h:36},
+    {wx:2700,y:55,w:95,h:33},{wx:3100,y:70,w:110,h:38},
+  ];
+  clouds.forEach(c=>{
+    const cx=((c.wx-camX*0.35)%LW+LW)%LW * (W/LW);
+    ctx.save(); ctx.globalAlpha=0.92;
+    ctx.fillStyle='#fff';
+    ctx.fillRect(cx,         c.y+c.h*0.4, c.w,     c.h*0.6);
+    ctx.fillRect(cx+c.w*0.1, c.y+c.h*0.15,c.w*0.55,c.h*0.5);
+    ctx.fillRect(cx+c.w*0.4, c.y,         c.w*0.4, c.h*0.5);
+    ctx.restore();
+  });
+
+  // distant hills / ground horizon
+  ctx.fillStyle='#7ec850';
+  for(let i=0;i<14;i++){
+    const hx=((i*240-camX*0.15)%W+W)%W;
+    const hh=28+(i%4)*14;
+    ctx.beginPath();
+    ctx.arc(hx+60,H,80+hh,Math.PI,0); ctx.fill();
   }
 }
 

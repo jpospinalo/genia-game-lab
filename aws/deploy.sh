@@ -1,39 +1,44 @@
 #!/bin/bash
 # ============================================================
-# deploy.sh — Publica index.html en AWS S3
+# deploy.sh — Publica el juego en Amazon S3
 # Uso: ./aws/deploy.sh
 # ============================================================
 
 set -e
 
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+
 source "$SCRIPT_DIR/config.sh"
 
-GAME_FILE="$PROJECT_ROOT/index.html"
+GAME_FILE="$PROJECT_DIR/index.html"
 
 if [ ! -f "$GAME_FILE" ]; then
-  echo "❌ No encontré index.html en la raíz del proyecto."
+  echo "❌ No encontré index.html en: $PROJECT_DIR"
   exit 1
 fi
 
 echo ""
-echo "🚀 Subiendo juego a AWS S3..."
+echo "🚀 Subiendo juego a Amazon S3..."
 
-# El acceso público se controla desde la política del bucket.
 aws s3 cp "$GAME_FILE" "s3://$S3_BUCKET/index.html" \
   --content-type "text/html" \
   --cache-control "no-cache"
 
 echo ""
-echo "✅ Juego desplegado"
+echo "✅ Juego desplegado correctamente"
 echo ""
-echo "   URL pública: $GAME_URL"
+echo "============================================================"
+echo "🌐 URL DEL JUEGO"
+echo "$GAME_URL"
+echo "============================================================"
 echo ""
 
-# Abrir la URL automáticamente cuando el sistema lo permita.
+# Abrir automáticamente en el navegador cuando sea posible
 if command -v open &>/dev/null; then
   open "$GAME_URL"
 elif command -v xdg-open &>/dev/null; then
   xdg-open "$GAME_URL"
+elif command -v start &>/dev/null; then
+  start "$GAME_URL"
 fi

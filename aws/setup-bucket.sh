@@ -9,18 +9,22 @@ set -e
 source "$(dirname "$0")/config.sh"
 
 echo ""
-echo "🪣 Creando bucket S3: $S3_BUCKET"
+echo "🪣 Preparando bucket S3: $S3_BUCKET"
 
-# Crear bucket (us-east-1 no necesita LocationConstraint)
-if [ "$AWS_DEFAULT_REGION" = "us-east-1" ]; then
-  aws s3api create-bucket \
-    --bucket "$S3_BUCKET" \
-    --region "$AWS_DEFAULT_REGION"
+# Crear el bucket solo si todavía no existe en la cuenta activa.
+if aws s3api head-bucket --bucket "$S3_BUCKET" 2>/dev/null; then
+  echo "✓ El bucket ya existe; se reutilizará."
 else
-  aws s3api create-bucket \
-    --bucket "$S3_BUCKET" \
-    --region "$AWS_DEFAULT_REGION" \
-    --create-bucket-configuration LocationConstraint="$AWS_DEFAULT_REGION"
+  if [ "$AWS_DEFAULT_REGION" = "us-east-1" ]; then
+    aws s3api create-bucket \
+      --bucket "$S3_BUCKET" \
+      --region "$AWS_DEFAULT_REGION"
+  else
+    aws s3api create-bucket \
+      --bucket "$S3_BUCKET" \
+      --region "$AWS_DEFAULT_REGION" \
+      --create-bucket-configuration LocationConstraint="$AWS_DEFAULT_REGION"
+  fi
 fi
 
 echo "🔓 Desactivando bloqueo de acceso público..."

@@ -1,17 +1,19 @@
 #!/bin/bash
 # ============================================================
-# CONFIGURACIÓN AWS — Mario IA Demo (solo S3)
-# Edita este archivo con tus datos reales antes de la demo
+# CONFIGURACIÓN AWS — GenAI Game Lab
+# Despliegue del videojuego como sitio web estático en Amazon S3
 # ============================================================
 
-# Tu bucket de S3 (debe tener un nombre único global)
-export S3_BUCKET="mario-ia-demo-2026"
-
-# Región de AWS donde creaste el bucket
+# Región de AWS
 export AWS_DEFAULT_REGION="us-east-1"
 
-# URL pública del juego (S3 static website)
-# Formato: http://BUCKET.s3-website-REGION.amazonaws.com
+# Obtener automáticamente el ID de la cuenta activa de AWS
+AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
+
+# Bucket S3 con nombre globalmente único
+export S3_BUCKET="genia-game-${AWS_ACCOUNT_ID}"
+
+# URL pública del videojuego
 export GAME_URL="http://${S3_BUCKET}.s3-website-${AWS_DEFAULT_REGION}.amazonaws.com/index.html"
 
 echo "✓ Config cargada"

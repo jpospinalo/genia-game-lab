@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GenAI Game Lab — Demo</title>
+<title>Dog Deep Sea</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { background: #000; display: flex; justify-content: center; align-items: center;
@@ -180,65 +180,68 @@ function resetGame() {
  *  PIXEL-ART DRAWING                                          *
  * ─────────────────────────────────────────────────────────── */
 
-/* Draw astronaut at (0,0), facing right */
-function dragonSprite(gliding, af, inv) {
+/* Draw pixel-art dog at (0,0), facing right */
+function dogSprite(gliding, af, inv) {
   if(inv>0 && (inv%6)<3) return; // invincibility flash
-  // HELMET
-  ctx.fillStyle='#dde8f0';
-  ctx.fillRect(4,0,20,16);
-  // visor dark base
-  ctx.fillStyle='#0a0f2a'; ctx.fillRect(7,3,14,9);
-  // visor tint
-  ctx.fillStyle='#1a3a99'; ctx.fillRect(8,4,12,7);
-  // visor reflection
-  ctx.fillStyle='#6688ff'; ctx.fillRect(9,4,4,3);
-  ctx.fillStyle='#aabbff'; ctx.fillRect(9,4,2,2);
-  // helmet ring
-  ctx.fillStyle='#b0b8c8'; ctx.fillRect(4,15,20,3);
-  // BACKPACK (life support, drawn behind body)
-  ctx.fillStyle='#8899aa'; ctx.fillRect(-4,17,7,13);
-  ctx.fillStyle='#667788'; ctx.fillRect(-3,19,5,9);
-  // tank detail
-  ctx.fillStyle='#99aabb'; ctx.fillRect(-3,19,2,3); ctx.fillRect(-3,23,2,3);
-  // BODY (suit torso)
-  ctx.fillStyle='#dde8f0'; ctx.fillRect(3,18,22,14);
-  // chest panel
-  ctx.fillStyle='#c0cad8'; ctx.fillRect(7,20,14,9);
-  // status lights
-  ctx.fillStyle='#00ff41'; ctx.fillRect(8,21,3,3);
-  ctx.fillStyle='#ff4400'; ctx.fillRect(13,21,3,3);
-  ctx.fillStyle='#ffcc00'; ctx.fillRect(18,21,3,3);
-  // suit seam
-  ctx.fillStyle='#b0b8c8'; ctx.fillRect(13,18,2,14);
-  // ARMS
-  ctx.fillStyle='#dde8f0';
-  ctx.fillRect(-1,20,4,9);  // left arm
-  ctx.fillRect(25,20,4,9);  // right arm
-  // gloves
-  ctx.fillStyle='#8899aa';
-  ctx.fillRect(-2,28,5,4);
-  ctx.fillRect(25,28,5,4);
-  // JETPACK thrust when gliding
+
+  // tail
+  ctx.fillStyle='#8b5a2b';
+  ctx.fillRect(-7,15,7,5);
+  ctx.fillRect(-11,11,5,5);
+
+  // body
+  ctx.fillStyle='#b87333';
+  ctx.fillRect(3,10,21,18);
+
+  // chest / belly
+  ctx.fillStyle='#e8c08d';
+  ctx.fillRect(6,14,10,12);
+
+  // cape while gliding (keeps the original glide mechanic visible)
   if(gliding) {
-    ctx.fillStyle='#ff6600';
-    ctx.fillRect(-5,26,4,4); ctx.fillRect(29,26,4,4);
-    ctx.fillStyle='#ffaa00';
-    ctx.fillRect(-4,28,3,5); ctx.fillRect(29,28,3,5);
-    ctx.fillStyle='#ffee88';
-    ctx.fillRect(-4,30,2,4); ctx.fillRect(30,30,2,4);
-    ctx.fillStyle='#fff';
-    ctx.fillRect(-3,29,1,2); ctx.fillRect(30,29,1,2);
+    ctx.fillStyle='#d62828';
+    ctx.fillRect(-5,10,9,4);
+    ctx.fillRect(-9,14,13,4);
+    ctx.fillRect(-12,18,16,4);
   }
-  // LEGS animated
-  ctx.fillStyle='#dde8f0';
+
+  // head
+  ctx.fillStyle='#b87333';
+  ctx.fillRect(7,0,16,14);
+
+  // floppy ear
+  ctx.fillStyle='#6f451f';
+  ctx.fillRect(5,1,5,11);
+  ctx.fillRect(3,7,5,7);
+
+  // muzzle
+  ctx.fillStyle='#e8c08d';
+  ctx.fillRect(18,6,10,7);
+
+  // nose
+  ctx.fillStyle='#1f1f1f';
+  ctx.fillRect(25,7,4,4);
+
+  // eye
+  ctx.fillStyle='#ffffff';
+  ctx.fillRect(15,3,5,5);
+  ctx.fillStyle='#111111';
+  ctx.fillRect(17,4,2,3);
+
+  // collar
+  ctx.fillStyle='#2471a3';
+  ctx.fillRect(6,12,18,3);
+  ctx.fillStyle='#f4d03f';
+  ctx.fillRect(14,14,4,4);
+
+  // animated legs
+  ctx.fillStyle='#8b5a2b';
   if(af===0){
-    ctx.fillRect(5,32,7,8); ctx.fillRect(16,32,7,8);
-    ctx.fillStyle='#8899aa';
-    ctx.fillRect(4,38,9,4);  ctx.fillRect(15,38,9,4);
+    ctx.fillRect(5,27,6,8); ctx.fillRect(17,27,6,8);
+    ctx.fillRect(3,33,9,4); ctx.fillRect(16,33,9,4);
   } else {
-    ctx.fillRect(5,32,7,10); ctx.fillRect(16,32,7,6);
-    ctx.fillStyle='#8899aa';
-    ctx.fillRect(4,40,9,4);  ctx.fillRect(15,36,9,4);
+    ctx.fillRect(5,27,6,10); ctx.fillRect(17,27,6,6);
+    ctx.fillRect(3,35,9,4); ctx.fillRect(16,31,9,4);
   }
 }
 
@@ -316,13 +319,17 @@ function drawPlat(p) {
   ctx.fillStyle='#f15a4a'; ctx.fillRect(px,py,p.w,2);
 }
 
-/* Draw '1010' binary bullet */
+/* Draw bone projectile */
 function drawBullet(b) {
   const bx = b.x-camX, by = b.y;
-  ctx.fillStyle='#003300'; ctx.fillRect(bx,by,36,14);
-  ctx.fillStyle='#00ff41'; ctx.fillRect(bx+1,by+1,34,12);
-  ctx.fillStyle='#003300'; ctx.font='bold 9px monospace';
-  ctx.textAlign='left'; ctx.fillText('1010',bx+4,by+11);
+  ctx.fillStyle='#f5f1df';
+  ctx.fillRect(bx+7,by+4,22,6);
+  ctx.fillRect(bx+3,by+2,7,5);
+  ctx.fillRect(bx+3,by+7,7,5);
+  ctx.fillRect(bx+27,by+2,7,5);
+  ctx.fillRect(bx+27,by+7,7,5);
+  ctx.fillStyle='#d8d1b7';
+  ctx.fillRect(bx+9,by+6,18,2);
 }
 
 /* Draw coin projectile */
@@ -344,65 +351,30 @@ function drawGoal() {
   ctx.fillStyle='#888'; ctx.fillRect(gx+4,gy+GOAL.h,24,8);
 }
 
-/* Draw sky background */
+/* Draw ocean background */
 function drawBG() {
-  // sky gradient blue
+  // sky→deep gradient
   const g=ctx.createLinearGradient(0,0,0,H);
-  g.addColorStop(0,'#1a78c2'); g.addColorStop(0.6,'#5bb8f5');
-  g.addColorStop(1,'#c8e8ff');
+  g.addColorStop(0,'#06082a'); g.addColorStop(0.55,'#0b1e55');
+  g.addColorStop(1,'#071e0e');
   ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
 
-  // sun
-  const sunX=W-110, sunY=70, sunR=44;
-  // glow
-  ctx.save(); ctx.globalAlpha=0.18; ctx.fillStyle='#fffaaa';
-  ctx.beginPath(); ctx.arc(sunX,sunY,sunR+22,0,Math.PI*2); ctx.fill();
-  ctx.globalAlpha=0.25; ctx.fillStyle='#ffe566';
-  ctx.beginPath(); ctx.arc(sunX,sunY,sunR+10,0,Math.PI*2); ctx.fill();
-  ctx.restore();
-  // sun rays rotating
-  ctx.save(); ctx.translate(sunX,sunY);
-  ctx.rotate(frame*0.008);
-  ctx.strokeStyle='#ffd700'; ctx.lineWidth=3; ctx.globalAlpha=0.55;
-  for(let i=0;i<8;i++){
-    const a=(Math.PI*2/8)*i;
+  // light rays
+  ctx.save(); ctx.globalAlpha=0.04; ctx.fillStyle='#3a80d0';
+  for(let i=0;i<6;i++){
+    const rx=((i*170+frame*0.15)%900)-100;
     ctx.beginPath();
-    ctx.moveTo(Math.cos(a)*(sunR+4), Math.sin(a)*(sunR+4));
-    ctx.lineTo(Math.cos(a)*(sunR+18), Math.sin(a)*(sunR+18));
-    ctx.stroke();
+    ctx.moveTo(rx,0); ctx.lineTo(rx+80,H); ctx.lineTo(rx-30,H);
+    ctx.closePath(); ctx.fill();
   }
   ctx.restore();
-  // sun disc
-  ctx.fillStyle='#ffe033';
-  ctx.beginPath(); ctx.arc(sunX,sunY,sunR,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#ffee88';
-  ctx.beginPath(); ctx.arc(sunX-10,sunY-10,sunR*0.55,0,Math.PI*2); ctx.fill();
 
-  // clouds (parallax)
-  ctx.fillStyle='#fff';
-  const clouds=[
-    {wx:200,y:60,w:110,h:38},{wx:550,y:40,w:80,h:28},
-    {wx:950,y:70,w:130,h:42},{wx:1400,y:50,w:100,h:32},
-    {wx:1800,y:65,w:90,h:30},{wx:2200,y:45,w:120,h:36},
-    {wx:2700,y:55,w:95,h:33},{wx:3100,y:70,w:110,h:38},
-  ];
-  clouds.forEach(c=>{
-    const cx=((c.wx-camX*0.35)%LW+LW)%LW * (W/LW);
-    ctx.save(); ctx.globalAlpha=0.92;
-    ctx.fillStyle='#fff';
-    ctx.fillRect(cx,         c.y+c.h*0.4, c.w,     c.h*0.6);
-    ctx.fillRect(cx+c.w*0.1, c.y+c.h*0.15,c.w*0.55,c.h*0.5);
-    ctx.fillRect(cx+c.w*0.4, c.y,         c.w*0.4, c.h*0.5);
-    ctx.restore();
-  });
-
-  // distant hills / ground horizon
-  ctx.fillStyle='#7ec850';
-  for(let i=0;i<14;i++){
-    const hx=((i*240-camX*0.15)%W+W)%W;
-    const hh=28+(i%4)*14;
-    ctx.beginPath();
-    ctx.arc(hx+60,H,80+hh,Math.PI,0); ctx.fill();
+  // far seaweed silhouettes
+  ctx.fillStyle='#0b2e38';
+  for(let i=0;i<22;i++){
+    const bx=((i*165-camX*0.18)%W+W)%W;
+    const bh=38+(i%5)*18;
+    ctx.fillRect(bx,H-bh,10,bh); ctx.fillRect(bx+3,H-bh-12,5,14);
   }
 }
 
@@ -592,7 +564,7 @@ function hitPlayer(fell) {
   if(player.dead||player.inv>0) return;
   lives--;
   SFX.die();
-  spawnParts(player.x+14,player.y+16,'#2ecc40',12,true);
+  spawnParts(player.x+14,player.y+16,'#b87333',12,true);
   if(fell||lives<=0){
     player.dead=true; player.dieT=55; player.vy=-8;
     if(lives<=0) setTimeout(()=>{if(lives<=0)GS='over';},900);
@@ -651,7 +623,7 @@ function draw() {
     ctx.save();
     ctx.translate(Math.floor(player.x-camX),Math.floor(player.y));
     if(player.dir<0){ctx.translate(14,0);ctx.scale(-1,1);}
-    dragonSprite(player.gliding,player.af,player.inv); ctx.restore();
+    dogSprite(player.gliding,player.af,player.inv); ctx.restore();
   }
 
   /* particles */
